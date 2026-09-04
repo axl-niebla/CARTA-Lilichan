@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎂 Feliz Cumpleaños 🎂</title>
+<style>
+  :root{
+    --rosa-1:#ffe1ec;
+    --rosa-2:#ffb3c6;
+    --rosa-3:#ff8fab;
+    --rosa-4:#ff5d8f;
+    --rosa-5:#d6336c;
+    --rosa-6:#8f2d56;
+    --blanco:#fff8fa;
+    --sombra: 0 10px 30px rgba(214,51,108,0.25);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  body{
+    font-family:'Segoe UI', system-ui, sans-serif;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 20% 20%, var(--rosa-1), transparent 40%),
+      radial-gradient(circle at 80% 0%, var(--rosa-2), transparent 40%),
+      linear-gradient(135deg, var(--rosa-1), var(--rosa-2));
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  .fondo-flotante{
+    position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+  }
+  .flotante{
+    position:absolute;
+    bottom:-10%;
+    font-size:1.8rem;
+    opacity:0.55;
+    animation: subir linear infinite;
+    user-select:none;
+  }
+  @keyframes subir{
+    0%{ transform:translateY(0) rotate(0deg); opacity:0; }
+    10%{ opacity:0.6;}
+    90%{ opacity:0.5;}
+    100%{ transform:translateY(-110vh) rotate(360deg); opacity:0; }
+  }
+
+  .app{
+    position:relative;
+    z-index:1;
+    max-width:720px;
+    margin:0 auto;
+    min-height:100vh;
+    padding:24px 16px 60px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  header.titulo{
+    text-align:center;
+    margin-bottom:10px;
+  }
+  header.titulo h1{
+    font-size:clamp(1.6rem, 5vw, 2.5rem);
+    color:var(--rosa-6);
+    text-shadow: 2px 2px 0 var(--blanco);
+    letter-spacing:1px;
+  }
+  header.titulo p{
+    color:var(--rosa-5);
+    font-weight:600;
+    margin-top:6px;
+  }
+
+  .escena{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    animation: aparecer .5s ease;
+  }
+  .escena.oculta{ display:none; }
+  @keyframes aparecer{
+    from{ opacity:0; transform:translateY(14px);}
+    to{ opacity:1; transform:translateY(0);}
+  }
+
+  .sobre-wrap{
+    display:flex;
+    justify-content:center;
+    margin:30px 0 14px;
+  }
+  .sobre{
+    position:relative;
+    width:min(300px, 78vw);
+    height:200px;
+    cursor:pointer;
+    filter:drop-shadow(0 12px 18px rgba(214,51,108,.35));
+    transition:transform .25s ease;
+  }
+  .sobre:hover{ transform:translateY(-4px) scale(1.02); }
+  .sobre .cuerpo{
+    position:absolute; inset:0;
+    background:linear-gradient(135deg, var(--rosa-3), var(--rosa-4));
+    border-radius:10px;
+  }
+  .sobre .solapa{
+    position:absolute;
+    top:0; left:0; width:100%; height:100px;
+    background:linear-gradient(135deg, var(--rosa-4), var(--rosa-5));
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top;
+    transition: transform .6s cubic-bezier(.68,-0.4,.27,1.4);
+    z-index:3;
+  }
+  .sobre.abierto .solapa{ transform: rotateX(180deg); }
+  .sobre .corazon-sello{
+    position:absolute; top:48%; left:50%;
+    transform:translate(-50%,-50%);
+    font-size:2rem; z-index:4;
+    animation: latido 1.4s infinite;
+  }
+  @keyframes latido{
+    0%,100%{ transform:translate(-50%,-50%) scale(1); }
+    50%{ transform:translate(-50%,-50%) scale(1.18); }
+  }
+  .pista{
+    text-align:center;
+    color:var(--rosa-6);
+    font-size:.95rem;
+    margin-top:6px;
+    opacity:.85;
+    font-weight:600;
+  }
+
+  .fotos-wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    width:100%;
+    max-width:520px;
+    margin:26px 0 8px;
+  }
+  .foto{
+    position:relative;
+    aspect-ratio:1/1;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:var(--sombra);
+    border:4px solid var(--blanco);
+    opacity:0;
+    transform:translateY(30px) scale(.9) rotate(-3deg);
+    animation: caeFoto .6s ease forwards;
+  }
+  .foto:nth-child(2){ animation-delay:.18s; transform:translateY(30px) scale(.9) rotate(3deg);}
+  @keyframes caeFoto{
+    to{ opacity:1; transform:translateY(0) scale(1) rotate(0deg); }
+  }
+  .foto img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    cursor:pointer;
+    transition:transform .3s ease;
+  }
+  .foto img:hover{ transform:scale(1.08); }
+  .foto .marco-texto{
+    position:absolute; bottom:0; left:0; right:0;
+    background:linear-gradient(transparent, rgba(143,45,86,.85));
+    color:#fff;
+    font-size:.78rem;
+    padding:16px 8px 8px;
+    text-align:center;
+    font-weight:600;
+    pointer-events:none;
+  }
+  .placeholder-vacio{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    height:100%; width:100%;
+    background:linear-gradient(135deg, var(--rosa-1), var(--rosa-2));
+    color:var(--rosa-5);
+    font-size:.78rem;
+    text-align:center;
+    padding:8px;
+    gap:6px;
+  }
+  .placeholder-vacio span{ font-size:1.9rem; }
+
+  .btn{
+    border:none;
+    cursor:pointer;
+    padding:13px 30px;
+    border-radius:50px;
+    font-weight:700;
+    font-size:1rem;
+    color:#fff;
+    background:linear-gradient(135deg, var(--rosa-4), var(--rosa-5));
+    box-shadow:0 6px 14px rgba(214,51,108,.35);
+    transition:transform .2s ease;
+    opacity:0;
+    animation: aparecerBtn .5s ease .5s forwards;
+  }
+  @keyframes aparecerBtn{
+    to{ opacity:1; }
+  }
+  .btn:hover{ transform:translateY(-3px); }
+  .btn.secundario{
+    background:var(--blanco);
+    color:var(--rosa-5);
+    border:2px solid var(--rosa-4);
+    animation:none;
+    opacity:1;
+  }
+  .btn-leer-wrap{ margin-top:20px; }
+
+  .acciones{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    margin-top:26px;
+    flex-wrap:wrap;
+  }
+
+  .mensaje-caja{
+    background:var(--blanco);
+    border-radius:22px;
+    padding:clamp(18px, 4vw, 40px);
+    box-shadow: var(--sombra);
+    border:2px dashed var(--rosa-3);
+    position:relative;
+    width:100%;
+  }
+  .mensaje-caja h2{
+    color:var(--rosa-5);
+    text-align:center;
+    margin-bottom:16px;
+    font-size:clamp(1.15rem, 3.5vw, 1.5rem);
+  }
+  #texto-carta{
+    min-height:160px;
+    color:#5a2340;
+    font-size:1.05rem;
+    line-height:1.7;
+    white-space:pre-wrap;
+  }
+  .cursor-tecleo{
+    display:inline-block;
+    width:2px;
+    background:var(--rosa-5);
+    animation: parpadeo .8s infinite;
+    margin-left:2px;
+  }
+  @keyframes parpadeo{ 50%{ opacity:0; } }
+  .firma{
+    text-align:right;
+    margin-top:18px;
+    font-style:italic;
+    color:var(--rosa-6);
+    font-weight:700;
+  }
+
+  .lightbox{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(143,45,86,.85);
+    z-index:50;
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .lightbox.activo{ display:flex; }
+  .lightbox-contenido{
+    max-width:90vw; max-height:80vh;
+    border-radius:14px;
+    box-shadow:0 20px 50px rgba(0,0,0,.4);
+  }
+  .lightbox-cerrar{
+    position:absolute; top:22px; right:28px;
+    font-size:2rem; color:#fff; cursor:pointer;
+    background:none; border:none;
+  }
+
+  .confeti{
+    position:fixed; top:-10px;
+    width:10px; height:10px;
+    z-index:60;
+    pointer-events:none;
+    animation: caer linear forwards;
+  }
+  @keyframes caer{
+    to{ transform:translateY(105vh) rotate(540deg); opacity:.3; }
+  }
+
+  footer{
+    text-align:center;
+    margin-top:34px;
+    color:var(--rosa-6);
+    font-size:.85rem;
+    opacity:.75;
+  }
+
+  @media (max-width:420px){
+    .fotos-wrap{ gap:12px; }
+    .btn{ padding:11px 22px; font-size:.92rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fondo-flotante" id="fondoFlotante"></div>
+
+<div class="app">
+  <header class="titulo">
+    <h1>🎉 ¡Feliz Cumpleaños    WACHAAA! 🎂</h1>
+    <p>Tienes una sorpresa esperándote 💕</p>
+  </header>
+
+  <!-- ESCENA 1: SOLO SOBRE -->
+  <section id="escena-sobre" class="escena">
+    <div class="sobre-wrap">
+      <div class="sobre" id="sobre">
+        <div class="cuerpo"></div>
+        <div class="solapa"></div>
+        <div class="corazon-sello">💗</div>
+      </div>
+    </div>
+    <p class="pista">👆 Toca el sobre para abrir tu sorpresa</p>
+  </section>
+
+  <!-- ESCENA 2: FOTOS + BOTÓN -->
+  <section id="escena-fotos" class="escena oculta">
+    <div class="fotos-wrap" id="fotosWrap"></div>
+    <div class="btn-leer-wrap">
+      <button class="btn" id="btnLeerCarta">💌 Leer la carta</button>
+    </div>
+  </section>
+
+  <!-- ESCENA 3: CARTA -->
+  <section id="escena-carta" class="escena oculta">
+    <div class="mensaje-caja">
+      <h2>Para ti, en tu día especial ✨</h2>
+      <div id="texto-carta"></div>
+      <p class="firma">— Con todo mi cariño 💗</p>
+    </div>
+    <div class="acciones">
+      <button class="btn" id="btnConfeti">🎊 Lanzar confeti</button>
+      <button class="btn secundario" id="btnVolver">⬅ Volver a las fotos</button>
+    </div>
+  </section>
+
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-cerrar" id="cerrarLightbox">✕</button>
+  <img class="lightbox-contenido" id="imgLightbox" src="" alt="Foto ampliada">
+</div>
+
+<script>
+/* =======================================================
+   PERSONALIZA AQUÍ ✏️
+   ======================================================= */
+const MENSAJE = `Hoy es un día muy
+especial porque
+celebramos tu vida y
+no hay palabras
+suficientes para
+expresar lo
+agradecidO que
+estoy por tenerte
+como hermana
+Gracias por ser mi
+compañera de vida,
+mi confidente y mi
+apoyo incondicional
+en cada momento.
+Tu risa, tu fuerza y tu
+forma de ver la vida
+me inspiran 
+todo lo bueno que
+este mundo tiene
+para ofrecerte, que
+este año te traiga
+muchísima felicidad
+amor, salud y
+sueños cumplidos.
+Nunca olvides lo
+especial que eres y
+lo mucho que te
+quiereremos los papas y yo y ya sabes
+que siempre estaré
+para ti en lo que sea
+wacha 🎂💗`;
+
+// Coloca exactamente tus 2 fotos aquí (URL o base64). Si dejas "src" vacío,
+// se muestra un marco decorativo en su lugar.
+const FOTOS = [
+  { src: "img1.jpeg", texto: "Foto 1" },
+  { src: "img2.jpg", texto: "Foto 2" },
+];
+
+/* ======================================================= */
+
+const simbolos = ['💖','🎈','✨','💕','🎉'];
+const fondo = document.getElementById('fondoFlotante');
+for(let i=0;i<20;i++){
+  const el = document.createElement('div');
+  el.className='flotante';
+  el.textContent = simbolos[Math.floor(Math.random()*simbolos.length)];
+  el.style.left = Math.random()*100+'%';
+  el.style.fontSize = (1 + Math.random()*1.8)+'rem';
+  el.style.animationDuration = (8 + Math.random()*10)+'s';
+  el.style.animationDelay = (Math.random()*10)+'s';
+  fondo.appendChild(el);
+}
+
+const escenaSobre = document.getElementById('escena-sobre');
+const escenaFotos = document.getElementById('escena-fotos');
+const escenaCarta = document.getElementById('escena-carta');
+
+function mostrarEscena(escena){
+  [escenaSobre, escenaFotos, escenaCarta].forEach(e=>e.classList.add('oculta'));
+  escena.classList.remove('oculta');
+}
+
+const sobre = document.getElementById('sobre');
+sobre.addEventListener('click', ()=>{
+  sobre.classList.add('abierto');
+  lanzarConfeti(45);
+  setTimeout(()=>{
+    mostrarEscena(escenaFotos);
+  }, 550);
+});
+
+const fotosWrap = document.getElementById('fotosWrap');
+FOTOS.slice(0,2).forEach(dato=>{
+  const div = document.createElement('div');
+  div.className = 'foto';
+  if(dato && dato.src){
+    div.innerHTML = `
+      <img src="${dato.src}" alt="${dato.texto || 'Foto'}">
+      ${dato.texto ? `<div class="marco-texto">${dato.texto}</div>` : ''}
+    `;
+    div.querySelector('img').addEventListener('click', ()=> abrirLightbox(dato.src));
+  } else {
+    div.innerHTML = `
+      <div class="placeholder-vacio">
+        <span>💗</span>
+        ${dato.texto || 'Agrega tu foto aquí'}
+      </div>
+    `;
+  }
+  fotosWrap.appendChild(div);
+});
+
+const textoCarta = document.getElementById('texto-carta');
+let escribiendo = false;
+let yaEscrito = false;
+
+function escribirMensaje(){
+  if(escribiendo || yaEscrito) return;
+  escribiendo = true;
+  textoCarta.innerHTML = '';
+  let i = 0;
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor-tecleo';
+  cursor.textContent = '\u00A0';
+
+  function paso(){
+    if(i < MENSAJE.length){
+      textoCarta.textContent = MENSAJE.slice(0, i+1);
+      textoCarta.appendChild(cursor);
+      i++;
+      setTimeout(paso, 18);
+    } else {
+      escribiendo = false;
+      yaEscrito = true;
+    }
+  }
+  paso();
+}
+
+document.getElementById('btnLeerCarta').addEventListener('click', ()=>{
+  mostrarEscena(escenaCarta);
+  setTimeout(escribirMensaje, 200);
+});
+
+document.getElementById('btnVolver').addEventListener('click', ()=>{
+  mostrarEscena(escenaFotos);
+});
+
+function lanzarConfeti(cantidad=60){
+  const colores = ['#ff8fab','#ff5d8f','#d6336c','#ffb3c6','#fff0f5','#8f2d56'];
+  for(let i=0;i<cantidad;i++){
+    const pieza = document.createElement('div');
+    pieza.className = 'confeti';
+    pieza.style.left = Math.random()*100+'vw';
+    pieza.style.background = colores[Math.floor(Math.random()*colores.length)];
+    pieza.style.width = pieza.style.height = (6+Math.random()*8)+'px';
+    pieza.style.borderRadius = Math.random()>0.5 ? '50%' : '2px';
+    pieza.style.animationDuration = (2.5+Math.random()*2)+'s';
+    document.body.appendChild(pieza);
+    setTimeout(()=>pieza.remove(), 5000);
+  }
+}
+document.getElementById('btnConfeti').addEventListener('click', ()=>lanzarConfeti(70));
+
+const lightbox = document.getElementById('lightbox');
+const imgLightbox = document.getElementById('imgLightbox');
+function abrirLightbox(src){
+  if(!src) return;
+  imgLightbox.src = src;
+  lightbox.classList.add('activo');
+}
+document.getElementById('cerrarLightbox').addEventListener('click', ()=>{
+  lightbox.classList.remove('activo');
+});
+lightbox.addEventListener('click', (e)=>{
+  if(e.target === lightbox) lightbox.classList.remove('activo');
+});
+</script>
+</body>
+</html>
